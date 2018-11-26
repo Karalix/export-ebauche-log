@@ -7,7 +7,7 @@ const fields = ['study', 'time', 'sketch', 'user', 'type', 'operation', 'strokes
 const opts = { fields };
 const transformOpts = { highWaterMark: 16384, encoding: 'utf-8' };
 
-var serviceAccount = require('./ebauche-logging-firebase-adminsdk-15e85-e66eebf916.json');
+var serviceAccount = require('./ebauche-logging-firebase-adminsdk-15e85-af1cffccee.json');
 
 let studyExports = {
   pilot1 : [
