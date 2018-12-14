@@ -52,6 +52,25 @@ let studyExports = {
     'sketch-donkey-664',
     'sketch-wolverine-636',
     'sketch-owl-457'
+  ],
+  groupA : [
+    'sketch-horse-3565',
+    'sketch-quail-2536',
+    'sketch-louse-9620',
+    'sketch-walrus-6760',
+    'sketch-chimpanzee-9514',
+    'sketch-otter-5021',
+    'sketch-ibis-3008',
+    'sketch-caribou-1240',
+    'sketch-hyena-9734',
+    'sketch-monkey-9968'
+  ],
+  groupB : [
+    'sketch-komodo-dragon-4302',
+    'sketch-butterfly-7051',
+    'sketch-falcon-3442',
+    'sketch-caribou-7946',
+    'sketch-badger-3697'
   ]
 }
 
@@ -66,53 +85,51 @@ var db = admin.firestore();
 const settings = {/* your settings... */ timestampsInSnapshots: true}
 db.settings(settings)
 
-for(var key in studyExports){
-  let studyPromises = []
-  studyExports[key].forEach((sketchId) => {
-    console.log('Starting export of sketch :'+ sketchId +' from study : '+key)
-    studyPromises.push( db.collection(sketchId).get()
-    .then(snap => {
-      let prevLength = 0
-      for(doc of snap.docs) {
-        if(doc.data().type === 'screenshot') {
-          if(prevLength != doc.data().path.length) {
-            saveScreenshot(doc.data().path, `${sketchId}-${doc.id}`, key)
-            prevLength = doc.data().path.length
+async function exportTask() {
+  for(var key in studyExports){
+    for(let sketchId of studyExports[key]){
+      console.log('Starting export of sketch :'+ sketchId +' from study : '+key)
+      await db.collection(sketchId).get()
+        .then(snap => {
+          let prevLength = 0
+          for(doc of snap.docs) {
+            if(doc.data().type === 'screenshot') {
+              if(prevLength != doc.data().path.length) {
+                saveScreenshot(doc.data().path, `${sketchId}-${doc.id}`, key)
+                prevLength = doc.data().path.length
+              }
+              continue
+            }
+            let tmpData = doc.data()
+            tmpData.sketch = sketchId
+            tmpData.study = key
+            tmpData.time = doc.id
+            docs.push(tmpData)
           }
-          continue
-        }
-        let tmpData = doc.data()
-        tmpData.sketch = sketchId
-        tmpData.study = key
-        tmpData.time = doc.id
-        docs.push(tmpData)
-      }
+        })
+        .catch(err => {
+          console.log('Err : ', err)
+        })
+    }
+
+    docs.sort((a, b) => {
+      return a.time - b.time
     })
-    .catch(err => {
-      console.log('Err : ', err)
-    }))
-  })
-  Promise.all(studyPromises)
-    .then(() => {
-      docs.sort((a, b) => {
-        return a.time - b.time
-      })
 
-      let docsJson = JSON.stringify(docs)
+    let docsJson = JSON.stringify(docs)
 
-      fs.writeFileSync(`${key}.json`, docsJson, 'utf8')
-      
-      const input = fs.createReadStream(`${key}.json`, { encoding: 'utf8' });
-      const output = fs.createWriteStream(`${key}.csv`, { encoding: 'utf8' });
-      const json2csv = new Json2csvTransform(opts, transformOpts);
+    fs.writeFileSync(`${key}.json`, docsJson, 'utf8')
+    
+    const input = fs.createReadStream(`${key}.json`, { encoding: 'utf8' });
+    const output = fs.createWriteStream(`${key}.csv`, { encoding: 'utf8' });
+    const json2csv = new Json2csvTransform(opts, transformOpts);
 
-      const processor = input.pipe(json2csv).pipe(output);
-      
-      json2csv
-        .on('header', header => console.log(header))
-        .on('error', err => console.log(err));
-
-    })
+    const processor = input.pipe(json2csv).pipe(output);
+    
+    json2csv
+      .on('header', header => console.log(header))
+      .on('error', err => console.log(err));
+  }
 }
 
 function saveScreenshot(svgString, filename, study) {
@@ -137,3 +154,5 @@ function saveScreenshot(svgString, filename, study) {
     }
   })
 }
+
+exportTask()

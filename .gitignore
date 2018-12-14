@@ -4,4 +4,5 @@ node_modules/
 tmp/
 screenshots/
 *.csv
-ebauche-logging-firebase-adminsdk-15e85-af1cffccee.json
+*.json
+\!package!.json
