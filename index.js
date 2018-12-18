@@ -79,6 +79,26 @@ let studyExports = {
     'sketch-hippopotamus-2972',
     'sketch-vicuña-814',
     'sketch-woodpecker-8020'
+  ],
+  groupG: [
+    'sketch-stingray-5600',
+    'sketch-caterpillar-2755',
+    'sketch-raccoon-6165',
+    'sketch-sandpiper-9775',
+    'sketch-armadillo-7836',
+    'sketch-stork-3817',
+    'sketch-duck-5510',
+    'sketch-sparrow-3156'
+  ],
+  groupH : [
+    'sketch-stingray-5600',
+    'sketch-caterpillar-2755',
+    'sketch-raccoon-6165',
+    'sketch-sandpiper-9775',
+    'sketch-armadillo-7836',
+    'sketch-stork-3817',
+    'sketch-duck-5510',
+    'sketch-sparrow-3156'
   ]
 }
 
