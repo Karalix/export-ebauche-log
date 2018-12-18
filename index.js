@@ -71,6 +71,14 @@ let studyExports = {
     'sketch-falcon-3442',
     'sketch-caribou-7946',
     'sketch-badger-3697'
+  ],
+  groupE : [
+    'sketch-caribou-4613',
+    'sketch-turtle-7405',
+    'sketch-panther-8286',
+    'sketch-hippopotamus-2972',
+    'sketch-vicuña-814',
+    'sketch-woodpecker-8020'
   ]
 }
 
