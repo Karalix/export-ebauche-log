@@ -99,6 +99,18 @@ let studyExports = {
     'sketch-stork-3817',
     'sketch-duck-5510',
     'sketch-sparrow-3156'
+  ],
+  groupC : [
+    'sketch-elephant-1644',
+    'sketch-bear-9939',
+    'sketch-goat-6470',
+    'sketch-leopard-6392',
+    'sketch-ostrich-466',
+    'sketch-wren-2121',
+    'sketch-fish-2257',
+    'sketch-stork-3',
+    'sketch-cheetah-4472',
+    'sketch-hawk-5824'
   ]
 }
 
